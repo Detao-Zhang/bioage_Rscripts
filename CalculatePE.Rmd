@@ -1,0 +1,434 @@
+---
+title: "BioAgePE"
+author: "yanlea"
+date: "2021年4月19日"
+output: html_document
+---
+setwd("./newPara220128")
+
+```{r}
+data <- read.csv("./BioAgeBGE_matched.csv", header=T)
+female <- subset(data, data$gender == "f")
+male <- subset(data, data$gender == "m")
+
+```
+
+```{r setup, include=FALSE}
+
+
+#data <- read.csv("BioAgeBGE_matched.csv", header=T)
+
+
+heart_age <- c("ECG.Diastolic_pressure.mmHg.", "ECG.Heart_rate.times.min.", "ECG.P.R_interval", "ECG.QRS_width.ms.", "ECG.QT_interval.ms.", "ECG.QTc_interval.ms.", "ECG.Systolic_pressure.mmHg.", "Health.Fasting_blood_glucose.mmol.L.", "Health.High.density_lipoprotein.mmol.L.", "Health.Low.density_lipoprotein.mmol.L.", "Health.Total_cholesterol.mmol.L.", "Health.Triglyceride.mmol.L.", "Phy.Step_index")
+  
+for(i in heart_age)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./HeartAgeParameter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./HeartAgeParameter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+}
+
+
+
+```
+
+
+```{r}
+
+immune_age <- c("Health.Monocyte_percentage...", "Health.Platelet_distribution_width.fL.", "Health.Platelet_volume_ratio...", "Hormone.12.Deoxycortisol_test.ng.mL.", "Hormone.Serum_cortisone_test_value.ng.mL.", "Hormone.Serum_hydrocortisone_test_value.ng.mL.")
+
+for(i in immune_age)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./immune_ageParameter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./immune_ageParameter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+}
+
+
+
+```
+
+```{r}
+
+kidney_age <- c("Health.Serum_creatinine.μmol.L.", "Health.Serum_uric_acid.μmol.L.", "Hormone.12.Deoxycorticosterone_Test_Value.ng.mL.", "Hormone.Corticosterone_test_value.ng.mL.")
+
+for(i in kidney_age)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./kidney_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./kidney_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+}
+
+
+```
+
+```{r}
+
+liver_age <- c("Amino.1.Methylhistidine.μmol.L.", "Amino.3.methylhistidine.μmol.L.", "Amino.Arginine.μmol.L.", "Amino.Argininosuccinic_acid.μmol.L.", "Amino.Citrulline.μmol.L.", "Amino.Cystine.μmol.L.", "Amino.Ethanolamine.μmol.L.", "Amino.Glutamate.μmol.L.", "Amino.Glycine.μmol.L.", "Amino.Isoleucine.μmol.L.", "Amino.L.homocitrulline.μmol.L.", "Amino.Lysine.μmol.L.", "Amino.Methionine.μmol.L.", "Amino.Phenylalanine.μmol.L.", "Amino.Phosphoethanolamine.μmol.L.", "Amino.Phosphoserine.μmol.L.", "Amino.Sarcosine.μmol.L.", "Amino.Serine.μmol.L.", "Amino.Taurine.μmol.L.", "Amino.Threonine.μmol.L.", "Amino.Tryptophan.μmol.L.", "Amino.Tyrosine.μmol.L.", "Amino.α.aminoadipic_acid.μmol.L.", "Amino.α.aminobutyric_Acid.μmol.L.", "Amino.β.Alanine.μmol.L.", "Health.Albumin_concentration.g.L.", "Health.Indirect_bilirubin.μmol.L.", "Health.Serum_alanine_aminotransferase.U.L.", "Health.Serum_aspartate_aminotransferase.U.L.", "Health.γ.glutamyl_transpeptidase.U.L.")
+
+for(i in liver_age)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./liver_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./liver_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+}
+
+##Amino.α.aminobutyric_Acid.μmol.L.", "Amino.β.Alanine.μmol.L. 这两个名字有问题
+
+
+
+```
+
+```{r}
+
+nutrition_age <- c("Microelement.Arsenic.μg.L.", "Microelement.Copper.mg.L.", "Microelement.Lead.μg.L.", "Microelement.Mercury.μg.L.", "Microelement.Selenium.μg.L.", "Vitamin.25.hydroxy_D.ng.mL.", "Vitamin.25.hydroxyD2.ng.mL.", "Vitamin.5.methyltetrahydrofolate.ng.mL.", "Vitamin.A.ng.mL.", "Vitamin.B1.ng.mL.", "Vitamin.B5.ng.mL.", "Vitamin.E.ng.mL.", "Vitamin.Pyridoxine.ng.mL.")
+
+for(i in nutrition_age)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./nutrition_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./nutrition_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+}
+
+```
+
+```{r}
+hormone_age <- c("Hormone.18.hydroxyprogesterone_test_value.ng.mL.", "Hormone.Androstenedione_test_value.ng.mL.", "Hormone.Progesterone.ng.mL.", "Hormone.Serum_dehydroepiandrosterone.ng.mL.", "Hormone.Serum_estradiol_test_value.ng.mL.", "Hormone.Serum_estrone_test_value.ng.mL.", "Hormone.Serum_testosterone_test_value.ng.mL.")
+
+for(i in hormone_age)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./hormone_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./hormone_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+}
+
+```
+
+```{r}
+
+#skin <- read.csv("./2017SkinPercentile.csv")
+#data <- skin
+
+#female <- subset(data, data$sex == "f")
+#male <- subset(data, data$sex == "m")
+#skin_age <- colnames(skin)[3:18]
+
+skin_age <- c("Skin.Number_of_brown_spots_on_frontal_face", "Skin.Number_of_brown_spots_on_side_face", "Skin.Number_of_pores_on_frontal_face", "Skin.Number_of_pores_on_side_face", "Skin.Number_of_porphyrins_on_frontal_face", "Skin.Number_of_porphyrins_on_side_face", "Skin.Number_of_red_areas_on_frontal_face", "Skin.Number_of_red_areas_on_side_face", "Skin.Number_of_spots_on_frontal_face", "Skin.Number_of_spots_on_side_face", "Skin.Number_of_textures_on_frontal_face", "Skin.Number_of_textures_on_side_face", "Skin.Number_of_UV_spots_on_frontal_face", "Skin.Number_of_UV_spots_on_side_face", "Skin.Number_of_wrinkles_on_frontal_face", "Skin.Number_of_wrinkles_on_side_face")
+
+for(i in skin_age)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./skin_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=6)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./skin_ageParapmeter.txt", append = TRUE, sep="\t", ncolumns=6)
+
+}
+
+```
+
+```{r}
+sport_bodycom <- c("Inbody.Basal_metabolic_rate.kcal.d.", "Inbody.Body_fat_rate...", "Inbody.Inorganic_salt.kg.", "Inbody.Protein.kg.", "Inbody.Total_body_water.L.", "Phy.Reaction_time.s.", "Phy.Sit.up.Push_up_Test", "Phy.Vertical_jump_Test", "Phy.Vital_capacity.mL.")
+
+for(i in sport_bodycom)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./sport_bodycomParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./sport_bodycomParapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+}
+
+```
+
+```{r}
+gut_meta_male <- c("Meta.Alistipes_onderdonkii", "Meta.Bacteroides_coprocola", "Meta.Bacteroides_nordii", "Meta.Bacteroides_uniformis", "Meta.Bifidobacterium_animalis", "Meta.Bifidobacterium_longum", "Meta.Clostridium_asparagiforme", "Meta.Clostridium_citroniae", "Meta.Clostridium_hathewayi", "Meta.Collinsella_aerofaciens", "Meta.Dorea_longicatena", "Meta.Enterobacter_aerogenes", "Meta.Gemella_unclassified", "Meta.Holdemania_filiformis", "Meta.Klebsiella_pneumoniae", "Meta.Lachnospiraceae_bacterium_3_1_46FAA", "Meta.Megamonas_unclassified", "Meta.Mitsuokella_multacida", "Meta.Odoribacter_splanchnicus", "Meta.Pantoea_unclassified", "Meta.Parabacteroides_merdae", "Meta.Ruminococcus_obeum", "Meta.Ruminococcus_sp_5_1_39BFAA", "Meta.Streptococcus_australis", "Meta.Streptococcus_salivarius", "Meta.Streptococcus_thermophilus", "Meta.Subdoligranulum_unclassified", "Meta.Weissella_confusa")
+
+gut_meta_femal <- c("Meta.Actinobacillus_unclassified", "Meta.Alistipes_shahii", "Meta.Bacteroides_eggerthii", "Meta.Bacteroides_salyersiae", "Meta.Bacteroides_sp_3_1_19", "Meta.Bacteroides_uniformis", "Meta.Clostridium_citroniae", "Meta.Clostridium_leptum", "Meta.Clostridium_nexile", "Meta.Comamonas_unclassified", "Meta.Coprobacillus_unclassified", "Meta.Eubacterium_eligens", "Meta.Haemophilus_parainfluenzae", "Meta.Haemophilus_sputorum", "Meta.Leuconostoc_lactis", "Meta.Prevotella_copri", "Meta.Roseburia_unclassified", "Meta.Streptococcus_australis", "Meta.Streptococcus_thermophilus", "Meta.Subdoligranulum_unclassified")
+
+
+
+
+for(i in gut_meta_femal)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./Gut_meta_Parapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./Gut_meta_Parapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+}
+
+
+
+for(i in gut_meta_male)
+{
+print(i)
+n <- which(colnames(data)==i)
+reg <- lm(male[, n] ~ male$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_male")
+
+
+male_results <- cbind(name, k, q, s, r)
+#row.names(male_results)[1] <- "ECG.P.R_interval_male"
+write(male_results, file = "./Gut_meta_Parapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+
+reg <- lm(female[, n] ~ female$age)
+sum <- summary(reg)
+
+k <- sum$coefficients[2, 1]
+q <- sum$coefficients[1, 1]
+s <- sd(sum$residuals)
+r <- sqrt(sum$r.squared)
+name <- paste(i, "_female")
+
+female_results <- cbind(name, k, q, s, r)
+
+#results <- rbind(male_results, female_results)
+
+write(female_results, file = "./Gut_meta_Parapmeter.txt", append = TRUE, sep="\t", ncolumns=5)
+}
+```
+
+
