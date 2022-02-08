@@ -1,5 +1,7 @@
 Li, Y. et al., 2022. Distinct biological ages of organs and systems identified from a multi-omics study. Under Review.
 
+[![DOI](https://zenodo.org/badge/453005426.svg)](https://zenodo.org/badge/latestdoi/453005426)
+
 ## Description
 `calculateKDM.R` is the script for calculating biological ages for individuals in the original data set. The KDM biological ages were calculated by [kdm_calc.R][1] module. 
 
