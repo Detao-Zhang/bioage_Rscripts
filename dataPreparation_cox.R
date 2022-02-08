@@ -15,7 +15,7 @@ library("survminer")
 
 #setwd("/Users/liyan/Documents/BGI/BioAge/NHANES")
 
-########load cardio data ###############
+#########load cardio data #########
 data <- read.csv("cardio.csv", header=T)
 
 bp <- read.csv("./all.DPX.csv", header=T)
@@ -23,7 +23,7 @@ bp <- read.csv("./all.DPX.csv", header=T)
 sub <- subset(data, data$age >=20)
 x <- c(1:55080)
 
-########################### load TCHOL Data #######################
+######### load TCHOL Data #########
 
 library(foreign)
 
@@ -38,25 +38,21 @@ CHOL13 <- read.xport("./TCHOL_H_13_14.XPT")
 CHOL15 <- read.xport("./TCHOL_I_15_16.XPT")
 CHOL17 <- read.xport("./P_TCHOL_17_20.XPT")
 
-
-
 TCHOL <- rbind (cbind(CHOL99$SEQN, CHOL99$LBXTC), cbind(CHOL01$SEQN, CHOL01$LBXTC), cbind(CHOL03$SEQN, CHOL03$LBXTC), cbind(CHOL05$SEQN, CHOL05$LBXTC), cbind(CHOL07$SEQN, CHOL07$LBXTC), cbind(CHOL09$SEQN, CHOL09$LBXTC), cbind(CHOL11$SEQN, CHOL11$LBXTC), cbind(CHOL13$SEQN, CHOL13$LBXTC), cbind(CHOL15$SEQN, CHOL15$LBXTC), cbind(CHOL17$SEQN, CHOL17$LBXTC))
 colnames(TCHOL) <- c("SEQN", "LBXTC")
 
-
-
-######## calculate sample level missing ########
+######### calculate sample level missing #########
 for(i in c(1:55080))
 { x[i] = sum(is.na(sub[i, 1:8]))
   sub[i, 9] = x[i]
 }
 
-                 
+
 nonmissCardio <- subset(sub, sub[, 9] == 0)
 
 heart <- merge(nonmissCardio, bp, by="SEQN")
 
-############ load death record data ##########
+######### load death record data #########
 
 dod <- read.csv("merged.Death.csv")
 
@@ -84,7 +80,7 @@ heart_disease <- subset(CardioCox, CardioCox$ucod_leading ==1 || CardioCox$morts
 res.cox <- coxph(Surv(as.numeric(CardioCox$permth_int), as.numeric(CardioCox$mortstat)) ~   CardioCox$gender + CardioCox$age  + CardioCox[, 23]) 
 summary(res.cox)
 
-################# cox regression using single feature ##################
+######### cox regression using single feature #########
 
 res.cox <- coxph(Surv(as.numeric(CardioCox$permth_int), as.numeric(CardioCox$mortstat)) ~   CardioCox$gender + CardioCox$age  + CardioCox$Health.Fasting_blood_glucose.mmol.L.) 
 summary(res.cox)
@@ -92,13 +88,11 @@ summary(res.cox)
 res.cox <- coxph(Surv(as.numeric(heart_disease$permth_int), as.numeric(heart_disease$mortstat)) ~   heart_disease$gender + heart_disease$age  + heart_disease[, 23]) 
 summary(res.cox)
 
-
 res.cox <- coxph(Surv(as.numeric(heart_disease$permth_int), as.numeric(heart_disease$mortstat)) ~   heart_disease$gender + heart_disease$age  + heart_disease$LBXTC)
 summary(res.cox)
 
 res.cox <- coxph(Surv(as.numeric(heart_disease$permth_int), as.numeric(heart_disease$mortstat)) ~   heart_disease$gender + heart_disease$age  + heart_disease$V23)
 summary(res.cox)
-
 
 res.cox <- coxph(Surv(as.numeric(CardioCox$permth_int), as.numeric(CardioCox$mortstat)) ~   CardioCox$gender + CardioCox$age  + CardioCox$kdm) 
 
@@ -107,14 +101,13 @@ res.cox <- coxph(Surv(as.numeric(middleAge$permth_int), as.numeric(middleAge$mor
 
 res.cox <- coxph(Surv(as.numeric(middleAge$permth_int), as.numeric(middleAge$mortstat)) ~   middleAge$gender + middleAge$age  + middleAge[, 19])
 
-####################### only consider people aged between 45~75 ##############
+######### only consider people aged between 45~75 #########
 
 middleAgeCardio <- subset(newtotal, newtotal$age >45 && newtotal$age <75)
 
 train <- kdm_calc(middleAgeCardio, biomarkers=c('Health.Triglyceride.mmol.L.', 'Health.Low.density_lipoprotein.mmol.L.', 'Health.Fasting_blood_glucose.mmol.L.', 'Health.High.density_lipoprotein.mmol.L.', 'BPXSY', 'BPXDI', 'LBXTC'))
 pred<- kdm_calc(middleAgeCardio, biomarkers=c('Health.Triglyceride.mmol.L.', 'Health.Low.density_lipoprotein.mmol.L.', 'Health.Fasting_blood_glucose.mmol.L.', 'Health.High.density_lipoprotein.mmol.L.', 'BPXSY', 'BPXDI', 'LBXTC'), fit=train$fit)
 results <- pred$data
-
 
 results[, 23] <- results$kdm/results$age
 CardioCox <- results
@@ -145,35 +138,33 @@ summary(res.cox)
 res.cox <- coxph(Surv(as.numeric(CardioCox$permth_int), as.numeric(CardioCox$mortstat)) ~   CardioCox$gender + CardioCox$age  + CardioCox$LBXTC) 
 summary(res.cox)
 
-
 for(i in c(1:dim(CardioCox)[1]))
 {
-  if(is.na(CardioCox[i, 23]))
+  if (is.na(CardioCox[i, 23]))
   {
     next;
-  }else if(CardioCox[i, 23] > 1)
+  } else if (CardioCox[i, 23] > 1)
   {
     CardioCox[i, 24] = 1
-  }else
+  } else
   {
     CardioCox[i, 24] = 0
   }
 }
 
-################################################################################################################################################
-########################## 
+#########
 heart_disease <- subset(CardioCox, CardioCox$ucod_leading ==1 || CardioCox$mortsta == 0) 
 CardioCox <- heart_disease
 
 for(i in c(1:dim(CardioCox)[1]))
 {
-  if(is.na(CardioCox[i, 20]))
+  if (is.na(CardioCox[i, 20]))
   {
     next;
-  }else if(CardioCox[i, 20] > 220)
+  } else if (CardioCox[i, 20] > 220)
   {
     CardioCox[i, 24] = 1
-  }else
+  } else
   {
     CardioCox[i, 24] = 0
   }
@@ -190,7 +181,6 @@ CardioCox_female <- subset(CardioCox, CardioCox$gender == 1 & CardioCox$age > 75
 res.cox <- coxph(Surv(as.numeric(CardioCox_female$permth_int), as.numeric(CardioCox_female$mortstat)) ~    CardioCox_female$age  + CardioCox_female$LBXTC) 
 summary(res.cox)
 
-
 ggsurvplot(
   fit = survfit(Surv(as.numeric(CardioCox_female$permth_int), as.numeric(CardioCox_female$mortstat)) ~  CardioCox_female$TC , data=CardioCox_female), ylim=c(0.75, 1)
 )
@@ -198,17 +188,15 @@ ggsurvplot(
 res.cox <- coxph(Surv(as.numeric(CardioCox$permth_int), as.numeric(CardioCox$mortstat)) ~   CardioCox$gender + CardioCox$age  + CardioCox_female$TC) 
 summary(res.cox)
 
-
-
 for(i in c(1:dim(CardioCox)[1]))
 {
-  if(is.na(CardioCox[i, 23]))
+  if (is.na(CardioCox[i, 23]))
   {
     next;
-  }else if(CardioCox[i, 23] > 1)
+  } else if (CardioCox[i, 23] > 1)
   {
     CardioCox[i, 24] = 1
-  }else
+  } else
   {
     CardioCox[i, 24] = 0
   }
@@ -228,20 +216,17 @@ ggforest(cox, data=CardioCox_female)
 res.cox <- coxph(Surv(as.numeric(CardioCox$permth_int), as.numeric(CardioCox$mortstat)) ~   CardioCox$gender + CardioCox$age  + CardioCox_female$BioAgeIndex) 
 summary(res.cox)
 
-
-########################################################################################################################
-
-
+###
 
 for(i in c(1:dim(CardioCox)[1]))
 {
-  if(is.na(CardioCox[i, 3]))
+  if (is.na(CardioCox[i, 3]))
   {
     next;
-  }else if(CardioCox[i, 3] >= 2.26)
+  } else if (CardioCox[i, 3] >= 2.26)
   {
     CardioCox[i, 24] = 1
-  }else
+  } else
   {
     CardioCox[i, 24] = 0
   }
@@ -262,9 +247,7 @@ summary(res.cox)
 cox <- coxph(Surv(as.numeric(CardioCox_female$permth_int), as.numeric(CardioCox_female$mortstat)) ~  CardioCox_female$BioAgeIndex , data=CardioCox_female)
 ggforest(cox, data=CardioCox_female)
 
-
-
-######################## Staff Family members ##############################
+######### Staff Family members #########
 
 data <- read.csv("./StaffFamilyManCardio.csv", header=T)
 markers <- c("Fasting_blood_glucose", "Triglyceride", "High-density_lipoprotein", "Low-density_lipoprotein", "Total_cholesterol", "Diastolic_pressure")
@@ -282,9 +265,7 @@ summary(reg)
 reg <- glm(results_male$manY ~ results_male$age + results_male$kdm , family = "binomial")
 summary(reg)
 
-
-
-######################## plot ###########################################
+######### plot #########
 result <- read.table("cox_regression.txt", header=T)
 yAxis <- 9:1
 
@@ -298,8 +279,7 @@ p + geom_vline(aes(xintercept = 1), size = .25, linetype = "dashed") +
   ylab("")+
   xlab("HR")
 
-
-OrganAgeCompare <- read.table("OrganAgeCompare.txt", header=T)
+  OrganAgeCompare <- read.table("OrganAgeCompare.txt", header=T)
 yAxis <- 5:1
 
 p <- ggplot(result, aes(x = exp.coef., y=marker)) 
@@ -311,4 +291,3 @@ p + geom_vline(aes(xintercept = 1), size = .25, linetype = "dashed") +
   annotate("text", x=2.8, y=yAxis, label = result$Pvalue)+
   ylab("")+
   xlab("HR")
-

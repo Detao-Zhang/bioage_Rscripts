@@ -46,10 +46,10 @@ kdm_calc = function (data, biomarkers, fit = NULL, s_ba2 = NULL) {
     colnames(lm_age) <- c("RMSE", "r_squared", "B_intercept", "B_age", "se(B)_age", "T_val_age", "pval_age")
     lm_age <- as.data.frame(lm_age)
 
-   # lm_age$r1 = abs((lm_age$B_age / lm_age$RMSE) * sqrt(lm_age$r_squared))
-	lm_age$r1 = ((lm_age$B_age / lm_age$RMSE) * sqrt(lm_age$r_squared))
-   # lm_age$r2 = abs((lm_age$B_age / lm_age$RMSE))
-	lm_age$r2 = ((lm_age$B_age / lm_age$RMSE))
+    # lm_age$r1 = abs((lm_age$B_age / lm_age$RMSE) * sqrt(lm_age$r_squared))
+	  lm_age$r1 = ((lm_age$B_age / lm_age$RMSE) * sqrt(lm_age$r_squared))
+    # lm_age$r2 = abs((lm_age$B_age / lm_age$RMSE))
+	  lm_age$r2 = ((lm_age$B_age / lm_age$RMSE))
     lm_age$n2 = (lm_age$B_age / lm_age$RMSE) * (lm_age$B_age / lm_age$RMSE)
 
     age_range = range(dat$age, na.rm = TRUE)
