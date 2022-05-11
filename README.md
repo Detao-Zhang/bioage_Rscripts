@@ -1,4 +1,4 @@
-Li, Y. et al., 2022. Distinct biological ages of organs and systems identified from a multi-omics study. Under Review.
+Nie et al., Distinct biological ages of organs and systems identiﬁed from a multi-omics study, Cell Reports (2022), https://doi.org/10.1016/j.celrep.2022.110459
 
 [![DOI](https://zenodo.org/badge/453005426.svg)](https://zenodo.org/badge/latestdoi/453005426)
 
