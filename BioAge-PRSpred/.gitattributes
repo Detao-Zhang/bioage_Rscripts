@@ -1,0 +1,9 @@
+nutrition.score filter=lfs diff=lfs merge=lfs -text
+skin.score filter=lfs diff=lfs merge=lfs -text
+cardio.score filter=lfs diff=lfs merge=lfs -text
+fitness.score filter=lfs diff=lfs merge=lfs -text
+hormone.score filter=lfs diff=lfs merge=lfs -text
+immune.score filter=lfs diff=lfs merge=lfs -text
+liver.score filter=lfs diff=lfs merge=lfs -text
+meta.score filter=lfs diff=lfs merge=lfs -text
+renal.score filter=lfs diff=lfs merge=lfs -text
